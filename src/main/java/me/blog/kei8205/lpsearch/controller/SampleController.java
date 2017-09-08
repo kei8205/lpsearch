@@ -1,4 +1,4 @@
-package me.blog.kei8205.lpsearch.common.controller;
+package me.blog.kei8205.lpsearch.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import me.blog.kei8205.lpsearch.common.model.LPBaseResponse;
