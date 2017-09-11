@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.blog.kei8205.lpsearch.common.mapper.ItemPriceLogMapper">
+    <sql id="logColumns">
+          mid
+        , cid
+        , lp
+        , log_datetime
+    </sql>
+
+    <update id="insertItemPriceLog">
+        INSERT INTO lp_item_log
+        (
+        <include refid="logColumns"/>
+        )
+        VALUES
+        (#{mid}, #{cid},#{lowPrice}, CURRENT_TIMESTAMP)
+        ON DUPLICATE KEY UPDATE
+        lp = #{lowPrice}
+    </update>
+
+    <select id="selectItemPriceLogList" resultType="lpLog">
+        SELECT
+          <include refid="logColumns"/>
+        FROM
+          lp_item_log
+        WHERE
+            mid = #{mid}
+        AND cid = #{cid}
+        ORDER BY log_datetime ASC
+    </select>
+</mapper>

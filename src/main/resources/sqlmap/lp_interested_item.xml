@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.blog.kei8205.lpsearch.common.mapper.InterestedItemMapper">
+
+    <sql id="interestedItemInsertColumn">
+        user_seq
+        , mid
+        , cid
+        , active
+        , title
+        , thumb_url
+        , initial_low_price
+        , register_datetime
+
+    </sql>
+    <sql id="interestedItemColumn">
+        <include refid="interestedItemInsertColumn"/>
+        , legendary_price
+        , legendary_price_datetime
+    </sql>
+
+
+    <select id="selectInterestedItemList" parameterType="int" resultType="interestedItem">
+        SELECT /* InterestedItemMapper.selectInterestedItemList */
+        <include refid="interestedItemColumn"/>
+        FROM
+        lp_interested_item
+        WHERE
+        user_seq = #{userSeq}
+    </select>
+    <select id="selectAllInterestedItemList" resultType="interestedItem">
+        SELECT /* InterestedItemMapper.selectAllInterestedItemList */
+        <include refid="interestedItemColumn"/>
+        FROM
+        lp_interested_item
+    </select>
+    <select id="selectInterestedItem" resultType="interestedItem">
+        SELECT /* InterestedItemMapper.selectInterestedItem */
+        <include refid="interestedItemColumn"/>
+        FROM
+        lp_interested_item
+        WHERE
+        user_seq = #{userSeq}
+        AND mid = #{mid}
+        AND cid = #{cid}
+    </select>
+
+    <insert id="insertInterestedItem">
+        INSERT INTO lp_interested_item
+        (
+        <include refid="interestedItemColumn"/>
+        )
+        VALUES
+        ( #{userSeq}, #{mid}, #{cid}, 'Y', #{title}, #{thumbUrl}, #{initialLowPrice}, CURRENT_TIMESTAMP, #{initialLowPrice}, CURRENT_TIMESTAMP)
+        ON DUPLICATE KEY UPDATE
+        register_datetime = CURRENT_TIMESTAMP
+    </insert>
+    <update id="updateLegendaryLowPrice">
+        UPDATE
+          lp_interested_item
+        SET
+           legendary_price = #{lowPrice}
+          ,legendary_price_datetime = CURRENT_TIMESTAMP
+        WHERE
+              mid = #{mid}
+          AND cid = #{cid}
+    </update>
+</mapper>

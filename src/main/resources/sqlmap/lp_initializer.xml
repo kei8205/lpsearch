@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.blog.kei8205.lpsearch.common.mapper.InitializeMapper">
+
+    <select id="showTables" resultType="string">
+        SHOW TABLES
+    </select>
+
+    <update id="createUserTable">
+CREATE TABLE IF NOT EXISTS `lp`.`lp_user` (
+  `seq` INT(11) NOT NULL AUTO_INCREMENT,
+  `access_token` VARCHAR(255) NOT NULL,
+  `push_token` VARCHAR(255) NULL DEFAULT NULL,
+  `register_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`seq`),
+  UNIQUE INDEX `idx_lp_user_access_token` (`access_token` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+    </update>
+
+    <update id="createInterrestedItemTable">
+CREATE TABLE IF NOT EXISTS `lp`.`lp_interested_item` (
+  `user_seq` INT(11) NOT NULL,
+  `mid` BIGINT(20) NOT NULL,
+  `cid` BIGINT(20) NOT NULL,
+  `title` VARCHAR(900) NULL DEFAULT NULL,
+  `thumb_url` VARCHAR(300) NULL DEFAULT NULL,
+  `active` CHAR(1) NULL DEFAULT NULL,
+  `initial_low_price` BIGINT(20) NULL DEFAULT NULL,
+  `register_datetime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `legendary_price` BIGINT(20) NULL DEFAULT NULL,
+  `legendary_price_datetime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_seq`, `mid`, `cid`),
+  INDEX `idx_lp_interedted_item_user_seq` (`user_seq` ASC),
+  INDEX `idx_lp_interedted_item_user_seq_active` (`user_seq` ASC, `active` ASC),
+  INDEX `idx_lp_interedted_item_mid_cid` (`mid` ASC, `cid` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+    </update>
+
+    <update id="createItemLogTable">
+CREATE TABLE IF NOT EXISTS `lp`.`lp_item_log` (
+  `mid` BIGINT(20) NOT NULL,
+  `cid` BIGINT(20) NOT NULL,
+  `lp` INT(11) NOT NULL,
+  `log_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`mid`, `cid`, `log_datetime`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+    </update>
+</mapper>
